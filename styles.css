@@ -1,0 +1,631 @@
+/* ==========================================================================
+   VARIABLES Y ESTILOS GLOBALES
+   ========================================================================== */
+:root {
+  /* Paleta de Colores "El Libro de la Vida" */
+  --bg-dark: #070210;
+  --bg-purple-deep: #16032b;
+  --purple-magic: #6b11b0;
+  --turquoise-glow: #00e5ff;
+  --gold-bright: #ffd700;
+  --cempasuchil-orange: #ff7700;
+  --magenta-festive: #e6005c;
+  --green-emerald: #00c8b3;
+  --text-light: #fff8e7;
+  --text-muted: #d0b8e8;
+
+  /* Tipografías */
+  --font-heading: 'Cinzel Decorative', 'Rozha One', serif;
+  --font-subheading: 'Rozha One', serif;
+  --font-body: 'Montserrat', sans-serif;
+
+  /* Sombras y Efectos */
+  --glow-gold: 0 0 15px rgba(255, 215, 0, 0.6);
+  --glow-turquoise: 0 0 15px rgba(0, 229, 255, 0.6);
+  --glow-pink: 0 0 15px rgba(230, 0, 92, 0.6);
+  --transition-smooth: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* Reset y caja flexible */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--bg-dark);
+  color: var(--text-light);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Canvas de Partículas */
+#canvas-particles {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ==========================================================================
+   PAPEL PICADO SUPERIOR
+   ========================================================================== */
+.papel-picado-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.flag {
+  width: 12vw;
+  height: 45px;
+  max-width: 90px;
+  clip-path: polygon(0 0, 100% 0, 100% 80%, 50% 100%, 0 80%);
+  animation: sway 3s ease-in-out infinite alternate;
+}
+
+.flag-purple { background-color: var(--purple-magic); animation-delay: 0s; }
+.flag-gold { background-color: var(--gold-bright); animation-delay: 0.4s; }
+.flag-red { background-color: var(--cempasuchil-orange); animation-delay: 0.8s; }
+.flag-turquoise { background-color: var(--turquoise-glow); animation-delay: 1.2s; }
+.flag-pink { background-color: var(--magenta-festive); animation-delay: 1.6s; }
+
+@keyframes sway {
+  0% { transform: rotate(-3deg) translateY(0); }
+  100% { transform: rotate(3deg) translateY(4px); }
+}
+
+/* ==========================================================================
+   ESTRUCTURA DE CONTENIDO Y BIENVENIDA
+   ========================================================================== */
+.main-wrapper {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+/* Pantalla de Bienvenida */
+.welcome-screen {
+  width: 100%;
+  max-width: 650px;
+  text-align: center;
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.welcome-card {
+  background: radial-gradient(circle, rgba(22, 3, 43, 0.95) 0%, rgba(7, 2, 16, 0.98) 100%);
+  border: 2px solid var(--gold-bright);
+  border-radius: 24px;
+  padding: clamp(24px, 5vw, 48px);
+  box-shadow: 0 0 30px rgba(107, 17, 176, 0.5), inset 0 0 20px rgba(255, 215, 0, 0.2);
+  position: relative;
+  backdrop-filter: blur(8px);
+}
+
+.svg-sugar-skull {
+  width: clamp(80px, 15vw, 120px);
+  height: clamp(80px, 15vw, 120px);
+  filter: drop-shadow(var(--glow-gold));
+  animation: pulse-glow 2.5s infinite alternate;
+}
+
+@keyframes pulse-glow {
+  0% { transform: scale(1); filter: drop-shadow(0 0 10px var(--gold-bright)); }
+  100% { transform: scale(1.05); filter: drop-shadow(0 0 22px var(--magenta-festive)); }
+}
+
+.subtitle-tag {
+  display: block;
+  font-family: var(--font-subheading);
+  color: var(--turquoise-glow);
+  font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-top: 15px;
+}
+
+.welcome-title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.8rem, 5vw, 3.2rem);
+  color: var(--gold-bright);
+  text-shadow: 2px 2px 8px rgba(0,0,0,0.8), 0 0 12px var(--cempasuchil-orange);
+  margin: 15px 0;
+  line-height: 1.2;
+}
+
+.welcome-intro {
+  font-size: clamp(0.95rem, 2vw, 1.15rem);
+  color: var(--text-muted);
+  font-style: italic;
+  margin-bottom: 30px;
+  line-height: 1.6;
+}
+
+/* ==========================================================================
+   BOTONES Y ELEMENTOS INTERACTIVOS
+   ========================================================================== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 28px;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-radius: 50px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--cempasuchil-orange), var(--magenta-festive));
+  color: #fff;
+  border-color: var(--gold-bright);
+}
+
+.btn-primary:hover {
+  transform: translateY(-4px) scale(1.03);
+  box-shadow: 0 8px 25px rgba(255, 119, 0, 0.6);
+}
+
+.btn-gold {
+  background: linear-gradient(135deg, var(--gold-bright), var(--cempasuchil-orange));
+  color: #111;
+}
+
+.btn-turquoise {
+  background: linear-gradient(135deg, var(--turquoise-glow), var(--green-emerald));
+  color: #070210;
+}
+
+.btn-purple {
+  background: linear-gradient(135deg, var(--purple-magic), var(--magenta-festive));
+  color: #fff;
+}
+
+.btn:hover {
+  transform: translateY(-3px);
+  filter: brightness(1.15);
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+/* Audio Control Flotante */
+.audio-controls {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 20;
+}
+
+.btn-circle {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: var(--purple-magic);
+  border: 2px solid var(--gold-bright);
+  color: #fff;
+  font-size: 1.4rem;
+  cursor: pointer;
+  box-shadow: var(--glow-gold);
+  transition: var(--transition-smooth);
+}
+
+.btn-circle:hover {
+  transform: rotate(15deg) scale(1.1);
+}
+
+/* ==========================================================================
+   CONTENIDO PRINCIPAL DE LA INVITACIÓN
+   ========================================================================== */
+.invitation-content {
+  width: 100%;
+  max-width: 1000px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  padding: 40px 10px;
+  transition: opacity 1s ease;
+}
+
+.hidden {
+  display: none !important;
+  opacity: 0;
+}
+
+.invitation-header {
+  text-align: center;
+}
+
+.golden-badge {
+  display: inline-block;
+  padding: 6px 16px;
+  background: rgba(255, 215, 0, 0.15);
+  border: 1px solid var(--gold-bright);
+  border-radius: 20px;
+  color: var(--gold-bright);
+  font-size: 0.85rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.main-title {
+  font-family: var(--font-heading);
+  font-size: clamp(2.2rem, 6vw, 4rem);
+  color: var(--turquoise-glow);
+  text-shadow: 0 0 15px rgba(0, 229, 255, 0.5), 2px 2px 4px #000;
+  margin: 15px 0;
+}
+
+.invitation-quote {
+  max-width: 700px;
+  margin: 0 auto;
+  font-size: clamp(1rem, 2.2vw, 1.25rem);
+  line-height: 1.7;
+  color: var(--text-light);
+}
+
+/* Grid de Personajes */
+.characters-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 20px;
+  justify-items: center;
+}
+
+.character-card {
+  background: rgba(22, 3, 43, 0.7);
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  border-radius: 16px;
+  padding: 15px;
+  text-align: center;
+  width: 100%;
+  max-width: 180px;
+  transition: var(--transition-smooth);
+}
+
+.character-card:hover {
+  transform: translateY(-8px);
+  border-color: var(--gold-bright);
+  box-shadow: 0 10px 20px rgba(107, 17, 176, 0.6);
+}
+
+.char-avatar {
+  width: 90px;
+  height: 110px;
+  margin: 0 auto 10px;
+}
+
+.char-svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5));
+}
+
+.char-name {
+  font-family: var(--font-subheading);
+  font-size: 1rem;
+  color: var(--gold-bright);
+  margin-bottom: 4px;
+}
+
+.char-role {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* Contador Regresivo */
+.countdown-section {
+  text-align: center;
+  background: rgba(11, 2, 26, 0.8);
+  border: 1px dashed var(--turquoise-glow);
+  border-radius: 20px;
+  padding: 25px;
+}
+
+.section-title {
+  font-family: var(--font-subheading);
+  color: var(--gold-bright);
+  font-size: 1.3rem;
+  margin-bottom: 20px;
+}
+
+.timer-grid {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.timer-box {
+  background: linear-gradient(180deg, rgba(107, 17, 176, 0.6), rgba(7, 2, 16, 0.9));
+  border: 1px solid var(--purple-magic);
+  border-radius: 12px;
+  padding: 12px 18px;
+  min-width: 75px;
+}
+
+.timer-num {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: clamp(1.5rem, 4vw, 2.3rem);
+  color: var(--turquoise-glow);
+}
+
+.timer-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* Altar e Información del Evento */
+.event-altar {
+  position: relative;
+  margin: 20px 0;
+}
+
+.altar-structure {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.altar-card {
+  flex: 1;
+  max-width: 650px;
+  background: radial-gradient(circle, rgba(35, 7, 65, 0.9) 0%, rgba(10, 3, 22, 0.95) 100%);
+  border: 2px solid var(--cempasuchil-orange);
+  border-radius: 20px;
+  padding: clamp(20px, 4vw, 35px);
+  box-shadow: inset 0 0 15px rgba(255, 119, 0, 0.3);
+}
+
+.altar-title {
+  font-family: var(--font-subheading);
+  color: var(--gold-bright);
+  text-align: center;
+  font-size: 1.6rem;
+  margin-bottom: 25px;
+  border-bottom: 1px stroke var(--gold-bright);
+}
+
+.event-details-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.event-details-list li {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.detail-icon {
+  font-size: 1.8rem;
+  background: rgba(255, 215, 0, 0.1);
+  padding: 10px;
+  border-radius: 12px;
+}
+
+.detail-info strong {
+  display: block;
+  color: var(--turquoise-glow);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+}
+
+.detail-info span {
+  font-size: 1.05rem;
+  color: var(--text-light);
+}
+
+/* Velas Animadas */
+.candle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.candle-body {
+  width: 22px;
+  height: 90px;
+  background: linear-gradient(90deg, #fff, #ffdfb3);
+  border-radius: 4px 4px 0 0;
+  box-shadow: inset -4px 0 6px rgba(0,0,0,0.2);
+}
+
+.flame {
+  width: 14px;
+  height: 24px;
+  background: radial-gradient(ellipse at bottom, #fff 0%, #ff8c00 60%, transparent 100%);
+  border-radius: 50% 50% 20% 20%;
+  animation: flicker 0.15s infinite alternate ease-in-out;
+  box-shadow: 0 0 12px #ff7700, 0 0 24px #ffd700;
+}
+
+@keyframes flicker {
+  0% { transform: scale(1) rotate(-2deg); opacity: 0.95; }
+  100% { transform: scale(1.15) rotate(2deg); opacity: 1; }
+}
+
+/* Sección de Acciones */
+.actions-section {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+/* Pie de Página */
+.invitation-footer {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.final-quote {
+  font-family: var(--font-subheading);
+  font-size: clamp(1.1rem, 3vw, 1.6rem);
+  color: var(--gold-bright);
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+}
+
+.footer-divider {
+  width: 100px;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--magenta-festive), transparent);
+  margin: 15px auto 0;
+}
+
+/* ==========================================================================
+   MODAL INTERACTIVO (RSVP)
+   ========================================================================== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(5, 1, 12, 0.85);
+  backdrop-filter: blur(6px);
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.modal-box {
+  background: var(--bg-purple-deep);
+  border: 2px solid var(--turquoise-glow);
+  border-radius: 20px;
+  padding: 30px;
+  width: 100%;
+  max-width: 420px;
+  position: relative;
+  box-shadow: var(--glow-turquoise);
+}
+
+.btn-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.8rem;
+  cursor: pointer;
+}
+
+.modal-title {
+  font-family: var(--font-subheading);
+  color: var(--turquoise-glow);
+  font-size: 1.5rem;
+  margin-bottom: 6px;
+}
+
+.modal-desc {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+}
+
+.rsvp-form {
+  display: flex;
+  flex-direction: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: left;
+}
+
+.form-group label {
+  font-size: 0.85rem;
+  color: var(--gold-bright);
+}
+
+.form-group input, .form-group select {
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid var(--purple-magic);
+  background: rgba(7, 2, 16, 0.9);
+  color: #fff;
+  font-family: var(--font-body);
+}
+
+.full-width {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.form-success {
+  text-align: center;
+  padding: 20px 0;
+}
+
+.success-icon {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 10px;
+}
+
+/* ==========================================================================
+   ADAPTABILIDAD RESPONSIVE (MEDIA QUERIES)
+   ========================================================================== */
+@media (max-width: 768px) {
+  .altar-structure {
+    flex-direction: column;
+  }
+
+  .candle {
+    display: none; /* Ocultar velas laterales en pantallas móviles pequeñas para optimizar espacio */
+  }
+
+  .actions-section {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .btn {
+    width: 100%;
+  }
+}
+
+/* Accesibilidad: Reducción de Animaciones */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
