@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Una Noche entre Dos Mundos - Día de Muertos</title>
+  <!-- Fuentes temáticas Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Montserrat:wght@300;400;600;700&family=Rozha+One&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Lienzo de partículas y cempasúchil de fondo -->
+  <canvas id="canvas-particles"></canvas>
+
+  <!-- Papel picado decorativo superior -->
+  <div class="papel-picado-banner" aria-hidden="true">
+    <div class="flag flag-purple"></div>
+    <div class="flag flag-gold"></div>
+    <div class="flag flag-red"></div>
+    <div class="flag flag-turquoise"></div>
+    <div class="flag flag-pink"></div>
+    <div class="flag flag-gold"></div>
+    <div class="flag flag-purple"></div>
+  </div>
+
+  <!-- Contenedor Principal / Pantalla de Bienvenida -->
+  <main class="main-wrapper">
+    
+    <!-- PANTALLA DE BIENVENIDA (COVER) -->
+    <section id="welcome-screen" class="welcome-screen">
+      <div class="welcome-card">
+        <div class="glow-orb"></div>
+        <div class="calavera-header">
+          <svg class="svg-sugar-skull" viewBox="0 0 100 100">
+            <path d="M50 10 C25 10 20 35 20 55 C20 75 35 90 50 90 C65 90 80 75 80 55 C80 35 75 10 50 10 Z" fill="url(#gold-grad)" stroke="#ff0077" stroke-width="2"/>
+            <circle cx="37" cy="45" r="10" fill="#0d021a" stroke="#00e5ff" stroke-width="2"/>
+            <circle cx="63" cy="45" r="10" fill="#0d021a" stroke="#00e5ff" stroke-width="2"/>
+            <path d="M45 62 L50 55 L55 62 Z" fill="#ff0077"/>
+            <path d="M35 75 Q50 82 65 75" fill="none" stroke="#ffd700" stroke-width="3" stroke-linecap="round"/>
+            <defs>
+              <linearGradient id="gold-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#ffd700"/>
+                <stop offset="100%" stop-color="#ff8c00"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+
+        <span class="subtitle-tag">El Libro de la Vida</span>
+        <h1 class="welcome-title">Una Noche entre Dos Mundos</h1>
+        <p class="welcome-intro">«Entre el mundo de los vivos y el de los muertos, existe una noche especial para celebrar, recordar y compartir».</p>
+
+        <button id="btn-open-invitation" class="btn btn-primary glow-button">
+          <span class="btn-text">Abrir invitación</span>
+          <span class="btn-icon">✨</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- PANTALLA PRINCIPAL DE LA INVITACIÓN (OCULTA INICIALMENTE) -->
+    <article id="invitation-content" class="invitation-content hidden" aria-hidden="true">
+      
+      <!-- Control de Audio Flotante -->
+      <div class="audio-controls">
+        <button id="btn-audio" class="btn-circle" title="Reproducir / Pausar Música">
+          <span id="audio-icon">🎵</span>
+        </button>
+        <audio id="bg-music" loop>
+          <!-- Se utiliza audio sintetizado por JS si la fuente local no existe -->
+          <source src="musica-dia-de-muertos.mp3" type="audio/mpeg">
+        </audio>
+      </div>
+
+      <!-- Encabezado de Invitación -->
+      <header class="invitation-header">
+        <span class="golden-badge">Gran Celebración Tradicional</span>
+        <h2 class="main-title">NOCHE DE DÍA DE MUERTOS</h2>
+        <p class="invitation-quote">
+          Te invitamos a compartir una noche mágica llena de música, colores, tradición y recuerdos, inspirada en el maravilloso mundo de <em>El libro de la vida</em>.
+        </p>
+      </header>
+
+      <!-- Galería de Personajes Interactivos -->
+      <section class="characters-grid">
+        
+        <!-- La Catrina -->
+        <div class="character-card catrina">
+          <div class="char-avatar">
+            <svg class="char-svg" viewBox="0 0 100 120">
+              <circle cx="50" cy="40" r="22" fill="#fff" stroke="#ff0077" stroke-width="2"/>
+              <!-- Sombrero elegante -->
+              <ellipse cx="50" cy="22" rx="38" ry="8" fill="#8a00c4"/>
+              <path d="M25 22 Q50 -5 75 22" fill="#e6005c"/>
+              <!-- Flores del sombrero -->
+              <circle cx="35" cy="18" r="5" fill="#ffd700"/>
+              <circle cx="50" cy="15" r="6" fill="#ff4500"/>
+              <circle cx="65" cy="18" r="5" fill="#ffd700"/>
+              <!-- Maquillaje de ojos -->
+              <circle cx="42" cy="42" r="6" fill="#ff0077"/>
+              <circle cx="58" cy="42" r="6" fill="#ff0077"/>
+              <path d="M45 54 Q50 58 55 54" stroke="#000" stroke-width="2" fill="none"/>
+              <!-- Vestido -->
+              <path d="M30 65 L70 65 L85 110 L15 110 Z" fill="#e6005c"/>
+            </svg>
+          </div>
+          <h3 class="char-name">La Catrina</h3>
+          <span class="char-role">Guardiana de la Recordada</span>
+        </div>
+
+        <!-- Manolo Sánchez -->
+        <div class="character-card manolo">
+          <div class="char-avatar">
+            <svg class="char-svg" viewBox="0 0 100 120">
+              <circle cx="50" cy="40" r="20" fill="#f5c29b"/>
+              <path d="M30 30 Q50 15 70 30 Q70 45 30 30" fill="#2b1704"/>
+              <!-- Traje de torero/músico -->
+              <path d="M28 60 L72 60 L80 110 L20 110 Z" fill="#1a1a2e"/>
+              <path d="M40 60 L50 80 L60 60" fill="#ffd700"/>
+              <!-- Guitarra -->
+              <ellipse cx="68" cy="85" rx="14" ry="18" fill="#b35900" transform="rotate(-20 68 85)"/>
+              <circle cx="66" cy="83" r="4" fill="#1a1a2e"/>
+            </svg>
+          </div>
+          <h3 class="char-name">Manolo Sánchez</h3>
+          <span class="char-role">El Músico y Soñador</span>
+        </div>
+
+        <!-- María Posada -->
+        <div class="character-card maria">
+          <div class="char-avatar">
+            <svg class="char-svg" viewBox="0 0 100 120">
+              <circle cx="50" cy="40" r="20" fill="#f8d3b0"/>
+              <!-- Cabello voluminoso -->
+              <path d="M20 35 C15 10 85 10 80 35 C85 60 75 70 70 75 C30 75 25 60 20 35 Z" fill="#3a1c06"/>
+              <circle cx="32" cy="22" r="5" fill="#00e5ff"/>
+              <!-- Vestido -->
+              <path d="M25 65 L75 65 L88 110 L12 110 Z" fill="#00c8b3"/>
+            </svg>
+          </div>
+          <h3 class="char-name">María Posada</h3>
+          <span class="char-role">La Heroína Rebelde</span>
+        </div>
+
+        <!-- Joaquín Mondragón -->
+        <div class="character-card joaquin">
+          <div class="char-avatar">
+            <svg class="char-svg" viewBox="0 0 100 120">
+              <circle cx="50" cy="40" r="21" fill="#e0ac69"/>
+              <path d="M30 25 L70 25 L70 35 L30 35 Z" fill="#111"/>
+              <!-- Bigote patriótico -->
+              <path d="M38 48 Q50 55 62 48 Q50 50 38 48" fill="#111"/>
+              <!-- Uniforme con medallas -->
+              <path d="M25 60 L75 60 L80 110 L20 110 Z" fill="#1b4332"/>
+              <circle cx="40" cy="75" r="4" fill="#ffd700"/>
+              <circle cx="50" cy="75" r="4" fill="#ff0055"/>
+              <circle cx="60" cy="75" r="4" fill="#00e5ff"/>
+            </svg>
+          </div>
+          <h3 class="char-name">Joaquín Mondragón</h3>
+          <span class="char-role">El Héroe de San Angel</span>
+        </div>
+
+        <!-- Xibalba -->
+        <div class="character-card xibalba">
+          <div class="char-avatar">
+            <svg class="char-svg" viewBox="0 0 100 120">
+              <!-- Rostro calavera oscura -->
+              <circle cx="50" cy="40" r="22" fill="#152238" stroke="#00e5ff" stroke-width="2"/>
+              <circle cx="42" cy="38" r="6" fill="#00e5ff"/>
+              <circle cx="58" cy="38" r="6" fill="#00e5ff"/>
+              <!-- Alas de murciélago / Capa -->
+              <path d="M10 40 Q30 70 50 65 Q70 70 90 40 Q95 90 50 115 Q5 90 10 40 Z" fill="#0b1320" stroke="#00e5ff" stroke-width="1"/>
+            </svg>
+          </div>
+          <h3 class="char-name">Xibalba</h3>
+          <span class="char-role">Gobernante del Olvido</span>
+        </div>
+
+      </section>
+
+      <!-- Contador Regresivo -->
+      <section class="countdown-section">
+        <h3 class="section-title">Faltan para la gran noche:</h3>
+        <div id="countdown-timer" class="timer-grid">
+          <div class="timer-box">
+            <span id="days" class="timer-num">00</span>
+            <span class="timer-label">Días</span>
+          </div>
+          <div class="timer-box">
+            <span id="hours" class="timer-num">00</span>
+            <span class="timer-label">Horas</span>
+          </div>
+          <div class="timer-box">
+            <span id="minutes" class="timer-num">00</span>
+            <span class="timer-label">Minutos</span>
+          </div>
+          <div class="timer-box">
+            <span id="seconds" class="timer-num">00</span>
+            <span class="timer-label">Segundos</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Altar Interactiva de Datos del Evento -->
+      <section class="event-altar">
+        <div class="altar-structure">
+          
+          <!-- Vela Izquierda -->
+          <div class="candle candle-left">
+            <div class="flame"></div>
+            <div class="candle-body"></div>
+          </div>
+
+          <!-- Información Central -->
+          <div class="altar-card">
+            <h3 class="altar-title">Detalles de la Celebración</h3>
+            
+            <ul class="event-details-list">
+              <li>
+                <span class="detail-icon">📅</span>
+                <div class="detail-info">
+                  <strong>Fecha</strong>
+                  <span>1 de Noviembre, 2026</span>
+                </div>
+              </li>
+              <li>
+                <span class="detail-icon">⏰</span>
+                <div class="detail-info">
+                  <strong>Hora</strong>
+                  <span>20:00 hrs (8:00 PM)</span>
+                </div>
+              </li>
+              <li>
+                <span class="detail-icon">🏡</span>
+                <div class="detail-info">
+                  <strong>Lugar</strong>
+                  <span>Casa de la Familia Sánchez</span>
+                </div>
+              </li>
+              <li>
+                <span class="detail-icon">📍</span>
+                <div class="detail-info">
+                  <strong>Dirección</strong>
+                  <span>Av. de los Recuerdos #11, Calzada del Cempasúchil</span>
+                </div>
+              </li>
+              <li>
+                <span class="detail-icon">🎭</span>
+                <div class="detail-info">
+                  <strong>Código de Vestimenta</strong>
+                  <span>Traje Tradicional / Catrines y Catrinas</span>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Vela Derecha -->
+          <div class="candle candle-right">
+            <div class="flame"></div>
+            <div class="candle-body"></div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Panel de Acciones y Botones -->
+      <section class="actions-section">
+        <button id="btn-rsvp" class="btn btn-gold">
+          <span>Confirmar asistencia</span>
+          <span>✍️</span>
+        </button>
+        <button id="btn-location" class="btn btn-turquoise">
+          <span>Ver ubicación</span>
+          <span>📍</span>
+        </button>
+        <button id="btn-share" class="btn btn-purple">
+          <span>Compartir invitación</span>
+          <span>📲</span>
+        </button>
+      </section>
+
+      <!-- Frase Final -->
+      <footer class="invitation-footer">
+        <p class="final-quote">«Porque mientras alguien nos recuerde, nunca desapareceremos».</p>
+        <div class="footer-divider"></div>
+      </footer>
+
+    </article>
+  </main>
+
+  <!-- MODAL DE CONFIRMACIÓN DE ASISTENCIA (RSVP) -->
+  <div id="rsvp-modal" class="modal-overlay hidden" aria-hidden="true">
+    <div class="modal-box">
+      <button id="btn-close-modal" class="btn-close">×</button>
+      <h3 class="modal-title">Confirma tu Presencia</h3>
+      <p class="modal-desc">Asegura tu lugar en el Libro de los Recuerdos.</p>
+      
+      <form id="rsvp-form" class="rsvp-form">
+        <div class="form-group">
+          <label for="guest-name">Nombre completo:</label>
+          <input type="text" id="guest-name" required placeholder="Ej. Manolo Sánchez">
+        </div>
+        
+        <div class="form-group">
+          <label for="guest-count">Número de acompañantes:</label>
+          <select id="guest-count">
+            <option value="1">Solo yo</option>
+            <option value="2">2 personas</option>
+            <option value="3">3 personas</option>
+            <option value="4+">Familia (4+)</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary full-width">
+          Confirmar Mi Asistencia
+        </button>
+      </form>
+
+      <div id="form-success" class="form-success hidden">
+        <span class="success-icon">💀🎉</span>
+        <h4>¡Asistencia Confirmada!</h4>
+        <p>Tu nombre ha sido inscrito en nuestro altar.</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
